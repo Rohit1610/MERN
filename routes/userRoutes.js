@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/usersController");
 router
-  .routes("/")
+  .route("/")
   .get(userController.getAllusers)
   .post(userController.createNewusers)
   .patch(userController.updateusers)

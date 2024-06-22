@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const getAllusers = asyncHandler(async (req, res) => {
   const users = await User.find().select("-password").lean();
-  if (!users) {
+  if (!users?.length) {
     return res.status(400).json({ message: "No users found" });
   }
   res.json(users);
@@ -18,7 +18,7 @@ const createNewusers = asyncHandler(async (req, res) => {
   if (duplicate) {
     return res.status(400).json({ message: "duplicate found" });
   }
-  const hashedPwd = bcrypt.hash(password, 10);
+  const hashedPwd = await bcrypt.hash(password, 10);
   const userObject = { username, password: hashedPwd, roles };
   const user = await User.create(userObject);
   if (user) {
